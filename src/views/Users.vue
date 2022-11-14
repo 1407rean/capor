@@ -80,14 +80,14 @@
               </div>
               <div class="msg_edit">
                 <el-button type="success">Success</el-button>
-                <el-button>Default</el-button>
+                <el-button>Edit</el-button>
               </div>
             </div>
             <!-- 代表作品 -->
             <div>
               <el-card class="msg_show">
                 <el-descriptions title="Classic" column="2">
-                  <el-descriptions-item label="Username"
+                  <el-descriptions-item label="Title"
                     >koo</el-descriptions-item
                   >
                   <el-descriptions-item label="Email"
@@ -118,23 +118,27 @@
   </el-container>
 </template>
 
-<script>
+<script>  
 import { ChatDotRound, Bell, Edit, Delete } from "@element-plus/icons-vue";
-import { ref } from "vue";
+import { getCurrentInstance, ref } from "vue";
+
 export default {
   setup() {
     const tableData = [
       {
-        id: ref(""),
+        author: ref(""),
+        date: ref(""),
       },
     ];
+
+    
 
     return {
       tableData,
       ChatDotRound,
       Bell,
       Edit,
-      Delete,
+      Delete
     };
   },
 };
@@ -147,7 +151,6 @@ export default {
   height: 100%;
 }
 .msg_head {
-  border: 1px solid #000;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -186,6 +189,7 @@ export default {
   flex-wrap: wrap;
   width: 99%;
   height: 55vh;
+  padding: 4% 4%;
 }
 
 .sort_main {
@@ -199,7 +203,6 @@ export default {
 .users_show {
   width: 90%;
   height: 15%;
-  border: 1px solid #000;
 }
 /* 用户数量 */
 .users_much {
@@ -225,10 +228,10 @@ export default {
   justify-content: center;
   align-items: flex-start;
   padding-left: 4%;
-  background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+  background-image: linear-gradient(-60deg, #16a085 0%, #f4d03f 100%);
 }
 .number_head {
-  color: rgb(167, 167, 167);
+  color: rgb(122, 122, 122);
   font-size: 14px;
 }
 .number {

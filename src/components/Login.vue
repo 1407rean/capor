@@ -23,7 +23,7 @@
               show-password
             />
             <!-- 登录按钮 -->
-            <el-button class="login_btn" @click="login('/home')"
+            <el-button class="login_btn" @click="toLogin"
               >Login In</el-button
             >
             <el-row class="log_un">
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { getCurrentInstance, ref } from "vue";
 import { useRouter } from "vue-router";
 
 export default {
@@ -81,11 +81,21 @@ export default {
       router.push(url);
     };
 
+    const {proxy}  = getCurrentInstance();
+    const toLogin = async ()=>{
+      let res = await proxy.$api.user.toLogin({
+        username: 'admin',
+        password: '123456',
+      })
+      console.log(res,'--');
+    }
+
     return {
       username,
       password,
       remember,
       login,
+      toLogin
     };
   },
 };
