@@ -3,16 +3,22 @@ import config from '../../config'
 
 
 const service = axios.create({
-    baseURL: config.baseApi
+    baseURL: config.baseApi,
+    headers: {
+        "Content-Type": "application/json;chartset=utf-8"
+    }
 })
 
 /**
  *  请求拦截
  */
 
-service.interceptors.request.use((req)=>{
-    console.log(req);
-    return req
+service.interceptors.request.use((config)=>{
+    config.headers = config.headers || {}
+    if(sessionStorage.getItem('token')){
+        config.headers.Authorization = sessionStorage.getItem('token') || ''
+    }
+    return config
 })
 
 /**
@@ -20,15 +26,13 @@ service.interceptors.request.use((req)=>{
  */
 
 service.interceptors.response.use((res)=>{
-    console.log(res);
-    const { code,data,msg } = res.data
+    const { status,data,msg } = res
     // 后端协商 视情况而定
-    if (code == 200) {
+    if (status == 200) {
         return data
     } else {
         // 网络请求错误
-        console.log('nonono');
-        // return Promise.reject(msg || 'nono')
+        return Promise.reject(msg || '网络请求错误，请稍后再试...')
     }
 })
 

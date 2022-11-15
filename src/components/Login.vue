@@ -23,9 +23,7 @@
               show-password
             />
             <!-- 登录按钮 -->
-            <el-button class="login_btn" @click="toLogin"
-              >Login In</el-button
-            >
+            <el-button class="login_btn" @click="toLogin">Login In</el-button>
             <el-row class="log_un">
               <!-- 记住密码 -->
               <el-col :span="12">
@@ -66,36 +64,46 @@
 </template>
 
 <script>
-import { getCurrentInstance, ref } from "vue";
+import { getCurrentInstance, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import {ElMessage} from 'element-plus';
 
 export default {
   setup() {
-    const router = useRouter();
-
-    const username = ref("");
-    const password = ref("");
     const remember = ref("");
 
-    const login = (url) => {
-      router.push(url);
-    };
+    const router = useRouter();
+    const username = ref("");
+    const password = ref("");
+    // 登录
+    const { proxy } = getCurrentInstance();
+    const toLogin = async () => {
+      const data = await proxy.$api.user.toLogin({
+        username: username.value,
+        password: password.value,
+      });
 
-    const {proxy}  = getCurrentInstance();
-    const toLogin = async ()=>{
-      let res = await proxy.$api.user.toLogin({
-        username: 'admin',
-        password: '123456',
-      })
-      console.log(res,'--');
-    }
+      /**
+       *  储存token
+       */
+      if (data.code == 200) {
+        sessionStorage.setItem('token', data.token);
+        router.push('/user');
+      } else {
+        ElMessage({
+          showClose: true,
+          message: data.message,
+          type: "error",
+        });
+      }
+      console.log(data, "--");
+    };
 
     return {
       username,
       password,
       remember,
-      login,
-      toLogin
+      toLogin,
     };
   },
 };
@@ -108,6 +116,7 @@ export default {
   position: relative;
 }
 .box-card {
+  --el-card-padding: 0;
   width: 200vh;
   height: 95vh;
   position: absolute;
