@@ -2,6 +2,7 @@
   <el-container>
     <el-main class="sort_main">
       <!-- 用户展示 -->
+      <button @click="getUserlist">aaaa</button>
       <div class="users_show">aaa</div>
       <!-- 用户数量变化 -->
       <div class="users_much">
@@ -9,11 +10,11 @@
         <div class="much_div">
           <el-card class="number_card">
             <b class="number_head">Total</b>
-            <div class="number">12,212</div>
+            <div class="number">{{ user_total }}人</div>
           </el-card>
           <el-card class="number_card">
             <b class="number_head">New Today</b>
-            <div class="number">12</div>
+            <div class="number">12人</div>
           </el-card>
         </div>
       </div>
@@ -21,25 +22,27 @@
       <div class="users_list">
         <b class="heads">Users List</b>
         <el-card class="UserList">
-          <el-table :data="tableData" stripe style="width: 100%">
-            <el-table-column prop="ID" label="ID" width="100" />
-            <el-table-column prop="username" label="username" width="180" />
-            <el-table-column prop="email" label="email" />
-            <el-table-column prop="avatar" label="avatar" />
+          <el-table :data="tableData" stripe style="width: 100%" @cell-click="handlerDelete" :page-seize="5">
+            <el-table-column prop="id" label="ID" width="100" />
+            <el-table-column prop="username" label="Username" width="180" />
+            <el-table-column prop="email" label="E-mail" />
+            <el-table-column prop="user_pic" label="Avatar" />
             <el-table-column fixed="right" label="Operations" width="210">
               <template #default="scope">
-                <el-button type="primary" :icon="Edit" />
-                <el-button type="danger" :icon="Delete" />
+                <el-button type="primary" @click="change" :icon="Edit" />
+                <el-button type="danger" @click="deleteUser" :icon="Delete" />
               </template>
             </el-table-column>
           </el-table>
           <!-- 分页器 -->
           <el-pagination
             small
-            background="#5bae23"
-            layout="prev, pager, next"
-            :total="50"
-            class="mt-4"
+            layout="total, sizes, prev, pager, next"
+            @size-change="handleSizeChange"
+            :page-size="5"
+            :page-sizes="[3,5]"
+            :total="pagesize"
+            class="page_u"
           />
         </el-card>
       </div>
@@ -53,7 +56,7 @@
             <el-row :gutter="40">
               <el-col :span="4">
                 <el-card style="width: 30px; height: 30px">
-                  <ChatDotRound />
+                  
                 </el-card>
               </el-col>
               <el-col :span="4">
@@ -65,8 +68,8 @@
           </el-header>
           <el-main class="msg_main">
             <div class="msg_avatar">
-              <el-avatar shape="square" :size="50" :src="squareUrl" />
-              <b>rean</b>
+              <el-avatar shape="square" :size="50"  />
+              <b>{{ myname }}</b>
               <span>hello~~</span>
               <div class="msg_works">
                 <el-card class="works_card">
@@ -86,10 +89,8 @@
             <!-- 代表作品 -->
             <div>
               <el-card class="msg_show">
-                <el-descriptions title="Classic" column="2">
-                  <el-descriptions-item label="Title"
-                    >koo</el-descriptions-item
-                  >
+                <el-descriptions title="Classic" :column="2">
+                  <el-descriptions-item label="Title">koo</el-descriptions-item>
                   <el-descriptions-item label="Email"
                     >18100000000</el-descriptions-item
                   >
@@ -118,27 +119,97 @@
   </el-container>
 </template>
 
-<script>  
+<script>
+import { useRouter } from 'vue-router';
 import { ChatDotRound, Bell, Edit, Delete } from "@element-plus/icons-vue";
 import { getCurrentInstance, ref } from "vue";
+import { onMounted } from "@vue/runtime-core";
 
 export default {
   setup() {
-    const tableData = [
-      {
-        author: ref(""),
-        date: ref(""),
-      },
-    ];
+    const { proxy } = getCurrentInstance();
+    const router = useRouter()
 
-    
+    /**
+     *  删除用户
+     */
+    let user_id = ref('')
+    const handlerDelete = (row) =>{
+      user_id = row.id; 
+    }
+    const deleteUser = async ()=>{
+      const data = await proxy.$api.userInfo.deleteUser({id:user_id});
+      getUserlist()   // 刷新列表
+    }
+
+    /**
+     *  修改信息
+     */
+    const change = () => {
+      router.push('/change')
+    };
+
+    /**
+     *  个人信息
+     */
+    let myname = ref("");
+    let avatar = ref("");
+    const getUser = async () => {
+      const data = await proxy.$api.userInfo.getUserinfo();
+      myname.value = data.data.username;
+    };
+
+    /**
+     *  用户列表
+     */
+    let size = ref('')
+    let pagesize = ref(0);
+    // 分页器数据
+    function handleSizeChange(val) {
+      console.log('??');
+      size.value = val;
+    }
+    const handleCurrentChange = (val) =>{
+      pagesize.value = val;
+      getUserlist()
+    }
+
+    let tableData = ref([]);
+    let user_total = ref("");
+    const getUserlist = async () => {
+      const data = await proxy.$api.userInfo.getUserlist();
+      if (data.code == 200) {
+        tableData.value = [...data.data];
+        user_total.value = tableData.value.length;
+        pagesize.value =
+          tableData.value.length
+      }
+      console.log(pagesize.value,tableData.value.length%5,"12");
+    };
+
+    onMounted(() => {
+      getUser();
+      getUserlist();
+    });
 
     return {
+      change,
+      handlerDelete,
+      deleteUser,
+      user_id,
+      getUser,
+      myname,
+      getUserlist,
       tableData,
+      pagesize,
+      handleSizeChange,
+      handleCurrentChange,
+      size,
+      user_total,
       ChatDotRound,
       Bell,
       Edit,
-      Delete
+      Delete,
     };
   },
 };
@@ -247,6 +318,12 @@ export default {
 .UserList {
   height: 85%;
   margin-top: 6%;
+  overflow: scroll;
+}
+.page_u {
+  position: absolute;
+  top: 85%;
+  z-index: 3;
 }
 
 .sort_main,
