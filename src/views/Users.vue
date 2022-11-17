@@ -1,3 +1,127 @@
+<style>
+/* 个人信息 */
+.aside_card {
+  width: 99%;
+  height: 100%;
+}
+.msg_head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.msg_main {
+  height: 80%;
+}
+.msg_i{
+  width: 30px; 
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* 基本信息 */
+.msg_avatar {
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.msg_avatar > b {
+  margin: 2% 0;
+}
+.msg_avatar > span {
+  margin-bottom: 4%;
+}
+/* 作品数量 */
+.msg_works,
+.msg_edit {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  justify-content: space-around;
+}
+.works_card {
+  width: 30%;
+  height: 80%;
+}
+.msg_show {
+  display: flex;
+  flex-wrap: wrap;
+  width: 99%;
+  height: 55vh;
+  padding: 4% 4%;
+}
+
+.sort_main {
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+/* 用户展示 */
+.users_show {
+  width: 90%;
+  height: 15%;
+}
+/* 用户数量 */
+.users_much {
+  width: 90%;
+  height: 20%;
+  position: relative;
+}
+.heads {
+  position: absolute;
+  top: 2%;
+  left: 2%;
+}
+.much_div {
+  display: flex;
+  height: 50%;
+}
+.number_card {
+  width: 20%;
+  height: 100%;
+  margin: 5% 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 4%;
+  background-image: linear-gradient(-60deg, #16a085 0%, #f4d03f 100%);
+}
+.number_head {
+  color: rgb(122, 122, 122);
+  font-size: 14px;
+}
+.number {
+  color: #fafafa;
+  font-weight: 500;
+}
+/* 用户列表 */
+.users_list {
+  width: 90%;
+  height: 65%;
+  position: relative;
+}
+.UserList {
+  height: 85%;
+  margin-top: 6%;
+  overflow: scroll;
+}
+.page_u {
+  position: absolute;
+  top: 85%;
+  z-index: 3;
+}
+
+.sort_main,
+.sort_aside {
+  /* border: 1px solid #000; */
+}
+</style>
+
 <template>
   <el-container>
     <el-main class="sort_main">
@@ -22,7 +146,7 @@
       <div class="users_list">
         <b class="heads">Users List</b>
         <el-card class="UserList">
-          <el-table :data="tableData" stripe style="width: 100%" @cell-click="handlerDelete" :page-seize="5">
+          <!-- <el-table :data="tableData" stripe style="width: 100%" @cell-click="handlerDelete" :page-seize="5">
             <el-table-column prop="id" label="ID" width="100" />
             <el-table-column prop="username" label="Username" width="180" />
             <el-table-column prop="email" label="E-mail" />
@@ -33,7 +157,7 @@
                 <el-button type="danger" @click="deleteUser" :icon="Delete" />
               </template>
             </el-table-column>
-          </el-table>
+          </el-table> -->
           <!-- 分页器 -->
           <el-pagination
             small
@@ -53,15 +177,15 @@
         <el-container>
           <el-header class="msg_head">
             <b>Hi!</b>
-            <el-row :gutter="40">
+            <el-row :gutter="40" style="display: flex;justify-content: flex-end;margin:0;">
               <el-col :span="4">
-                <el-card style="width: 30px; height: 30px">
-                  
+                <el-card class="msg_i">
+                  <el-icon><ChatDotRound /></el-icon>
                 </el-card>
               </el-col>
               <el-col :span="4">
-                <el-card style="width: 30px; height: 30px">
-                  <Bell />
+                <el-card class="msg_i">
+                  <el-icon><Bell /></el-icon>
                 </el-card>
               </el-col>
             </el-row>
@@ -214,120 +338,3 @@ export default {
   },
 };
 </script>
-
-<style>
-/* 个人信息 */
-.aside_card {
-  width: 99%;
-  height: 100%;
-}
-.msg_head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.msg_main {
-  height: 80%;
-}
-/* 基本信息 */
-.msg_avatar {
-  height: 40vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.msg_avatar > b {
-  margin: 2% 0;
-}
-.msg_avatar > span {
-  margin-bottom: 4%;
-}
-/* 作品数量 */
-.msg_works,
-.msg_edit {
-  width: 100%;
-  height: 20%;
-  display: flex;
-  justify-content: space-around;
-}
-.works_card {
-  width: 30%;
-  height: 80%;
-}
-.msg_show {
-  display: flex;
-  flex-wrap: wrap;
-  width: 99%;
-  height: 55vh;
-  padding: 4% 4%;
-}
-
-.sort_main {
-  background: #fafafa;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-/* 用户展示 */
-.users_show {
-  width: 90%;
-  height: 15%;
-}
-/* 用户数量 */
-.users_much {
-  width: 90%;
-  height: 20%;
-  position: relative;
-}
-.heads {
-  position: absolute;
-  top: 2%;
-  left: 2%;
-}
-.much_div {
-  display: flex;
-  height: 50%;
-}
-.number_card {
-  width: 20%;
-  height: 100%;
-  margin: 5% 5%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  padding-left: 4%;
-  background-image: linear-gradient(-60deg, #16a085 0%, #f4d03f 100%);
-}
-.number_head {
-  color: rgb(122, 122, 122);
-  font-size: 14px;
-}
-.number {
-  color: #fafafa;
-  font-weight: 500;
-}
-/* 用户列表 */
-.users_list {
-  width: 90%;
-  height: 65%;
-  position: relative;
-}
-.UserList {
-  height: 85%;
-  margin-top: 6%;
-  overflow: scroll;
-}
-.page_u {
-  position: absolute;
-  top: 85%;
-  z-index: 3;
-}
-
-.sort_main,
-.sort_aside {
-  /* border: 1px solid #000; */
-}
-</style>

@@ -11,7 +11,7 @@ const env = import.meta.env.MODE || 'prod'
 const EnvConfig = {
     development: {
         baseApi: '/api',
-        mockApi: 'http://127.0.0.1:8080'
+        mockApi: 'http://127.0.0.1:8081'
     },
     test: {
         baseApi: '//test.future.com/api',

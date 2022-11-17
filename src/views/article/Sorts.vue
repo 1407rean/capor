@@ -10,17 +10,17 @@
           <div class="avator">
             <el-row :gutter="40">
               <el-col :span="4">
-                <el-card style="width: 30px; height: 30px">
+                <el-card class="a_icon">
                   <el-icon><ChatLineSquare /></el-icon>
                 </el-card>
               </el-col>
               <el-col :span="4">
-                <el-card style="width: 30px; height: 30px">
+                <el-card class="a_icon">
                   <el-icon><Bell /></el-icon>
                 </el-card>
               </el-col>
               <el-col :span="4">
-                <el-card style="width: 30px; height: 30px">
+                <el-card class="a_icon">
                   <el-icon><Bell /></el-icon>
                 </el-card>
               </el-col>
@@ -133,6 +133,13 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+}
+.a_icon{
+  width: 30px; 
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items:center;
 }
 .user_main {
   height: 90vh;

@@ -1,15 +1,17 @@
 /**
  *  所有api的管理
  */
-import user from './modules/user'
-import userInfo  from './modules/userInfo'
+import user from "./modules/user";
+import userInfo from "./modules/userInfo";
+import article from "./modules/article";
 
 const api = {
-    user,
-    userInfo
-}
+  user,
+  userInfo,
+  article,
+};
 
-export default api
+export default api;
 
 // import request from './service/request'
 // export default {
